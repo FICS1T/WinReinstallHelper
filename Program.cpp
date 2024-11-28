@@ -6,9 +6,13 @@
 #include <urlmon.h>
 
 #pragma comment(lib, "urlmon.lib")
-void SetConsoleOutputCP() {
 
+void SetConsoleOutputCP() {
     SetConsoleOutputCP(CP_UTF8);
+}
+
+void OpenWebsite(const std::string& url) {
+    ShellExecuteA(NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
 void DownloadFile(const std::string& url, const std::string& outputPath) {
@@ -26,10 +30,8 @@ void LaunchFile(const std::string& filePath) {
 }
 
 int main() {
-
     SetConsoleOutputCP();
     setlocale(LC_ALL, "Russian");
-
 
     std::vector<std::string> fileUrls = {
         "https://www.7-zip.org/a/7z2408-x64.exe",
@@ -47,7 +49,10 @@ int main() {
         "https://github.com/windirstat/windirstat/releases/download/release%2Fv2.0.3/WinDirStat-x64.msi",
         "https://download01.logi.com/web/ftp/pub/techsupport/gaming/lghub_installer.exe",
         "https://vscode.download.prss.microsoft.com/dbazure/download/stable/f1a4fb101478ce6ec82fe9627c43efbf9e98c813/VSCodeUserSetup-x64-1.95.3.exe",
-        "https://dl.ocbase.com/per/stable/OCCT.exe"
+        "https://dl.ocbase.com/per/stable/OCCT.exe",
+        "https://cdn.fastly.steamstatic.com/client/installer/SteamSetup.exe",
+        "https://www.fosshub.com/qBittorrent.html",
+        "https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7BFD415EAD-8A45-A037-D5CB-E8CB4B8AA2A9%7D%26lang%3Dru%26browser%3D4%26usagestats%3D1%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe"
     };
 
     std::vector<std::string> fileNames = {
@@ -66,14 +71,15 @@ int main() {
         "WinDirStat",
         "Logitech G HUB",
         "Visual Studio Code",
-        "OCCT"
+        "OCCT",
+        "Steam",
+        "qbittorrent",
+        "Google Chrome"
     };
-
 
     std::string downloadFolder;
     char* buffer = nullptr;
     size_t size;
-
 
     if (_dupenv_s(&buffer, &size, "USERPROFILE") == 0) {
         downloadFolder = std::string(buffer) + "\\Documents\\DownloadedFiles";
@@ -94,14 +100,13 @@ int main() {
     std::string input;
     std::getline(std::cin, input);
 
-
     std::vector<int> selectedFiles;
     size_t pos = 0;
     while ((pos = input.find(' ')) != std::string::npos) {
         selectedFiles.push_back(std::stoi(input.substr(0, pos)) - 1);
         input.erase(0, pos + 1);
     }
-    selectedFiles.push_back(std::stoi(input) - 1); 
+    selectedFiles.push_back(std::stoi(input) - 1);
 
     for (int index : selectedFiles) {
         if (index >= 0 && index < fileUrls.size()) {
@@ -109,9 +114,14 @@ int main() {
             std::string filePath = downloadFolder + "\\" + fileName;
 
 
-            DownloadFile(fileUrls[index], filePath);
-
-            LaunchFile(filePath);
+            if (fileUrls[index].substr(fileUrls[index].find_last_of('.') + 1) == "exe" ||
+                fileUrls[index].substr(fileUrls[index].find_last_of('.') + 1) == "zip") {
+                DownloadFile(fileUrls[index], filePath);
+                LaunchFile(filePath);
+            }
+            else {
+                OpenWebsite(fileUrls[index]); 
+            }
         }
         else {
             std::cerr << "Некорректный номер: " << index + 1 << std::endl;
