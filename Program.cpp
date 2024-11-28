@@ -52,7 +52,9 @@ int main() {
         "https://dl.ocbase.com/per/stable/OCCT.exe",
         "https://cdn.fastly.steamstatic.com/client/installer/SteamSetup.exe",
         "https://www.fosshub.com/qBittorrent.html",
-        "https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7BFD415EAD-8A45-A037-D5CB-E8CB4B8AA2A9%7D%26lang%3Dru%26browser%3D4%26usagestats%3D1%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe"
+        "https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7BFD415EAD-8A45-A037-D5CB-E8CB4B8AA2A9%7D%26lang%3Dru%26browser%3D4%26usagestats%3D1%26appname%3DGoogle%2520Chrome%26needsadmin%3Dprefers%26ap%3Dx64-statsdef_1%26installdataindex%3Dempty/update2/installers/ChromeSetup.exe",
+        "https://download.mozilla.org/?product=firefox-stub&os=win&lang=ru&attribution_code=c291cmNlPXd3dy5nb29nbGUuY29tJm1lZGl1bT1yZWZlcnJhbCZjYW1wYWlnbj0obm90IHNldCkmY29udGVudD0obm90IHNldCkmZXhwZXJpbWVudD0obm90IHNldCkmdmFyaWF0aW9uPShub3Qgc2V0KSZ1YT1jaHJvbWUmY2xpZW50X2lkX2dhND0xMzAxNTYzNzYwLjE3MzI4MjE3NDcmc2Vzc2lvbl9pZD03NDA1NjA5Nzg5JmRsc291cmNlPW1vem9yZw..&attribution_sig=53c5b8d75e5107175afc41c725dd3ab315e1a513d25dd8a74684a14f49b816f9&_gl=1*2icvem*_ga*MTMwMTU2Mzc2MC4xNzMyODIxNzQ3*_ga_MQ7767QQQW*MTczMjgyMTc0Ni4xLjEuMTczMjgyMTc1MC4wLjAuMA..",
+
     };
 
     std::vector<std::string> fileNames = {
@@ -75,6 +77,7 @@ int main() {
         "Steam",
         "qbittorrent",
         "Google Chrome"
+        "FireFox"
     };
 
     std::string downloadFolder;
