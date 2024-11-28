@@ -6,26 +6,27 @@
 #include <urlmon.h>
 
 #pragma comment(lib, "urlmon.lib")
+using namespace std;
 
 void SetConsoleOutputCP() {
     SetConsoleOutputCP(CP_UTF8);
 }
 
-void OpenWebsite(const std::string& url) {
+void OpenWebsite(const string& url) {
     ShellExecuteA(NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
 }
 
-void DownloadFile(const std::string& url, const std::string& outputPath) {
+void DownloadFile(const string& url, const string& outputPath) {
     HRESULT result = URLDownloadToFileA(NULL, url.c_str(), outputPath.c_str(), 0, NULL);
     if (SUCCEEDED(result)) {
-        std::cout << "Файл загружен: " << outputPath << std::endl;
+        cout << "Файл загружен: " << outputPath << endl;
     }
     else {
-        std::cerr << "Ошибка загрузки файла: " << url << std::endl;
+        cerr << "Ошибка загрузки файла: " << url << endl;
     }
 }
 
-void LaunchFile(const std::string& filePath) {
+void LaunchFile(const string& filePath) {
     ShellExecuteA(NULL, "open", filePath.c_str(), NULL, NULL, SW_SHOW);
 }
 
@@ -33,7 +34,7 @@ int main() {
     SetConsoleOutputCP();
     setlocale(LC_ALL, "Russian");
 
-    std::vector<std::string> fileUrls = {
+    vector<string> fileUrls = {
         "https://www.7-zip.org/a/7z2408-x64.exe",
         "https://github.com/ShareX/ShareX/releases/download/v16.1.0/ShareX-16.1.0-setup.exe",
         "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.7.2/npp.8.7.2.Installer.exe",
@@ -57,7 +58,7 @@ int main() {
 
     };
 
-    std::vector<std::string> fileNames = {
+    vector<string> fileNames = {
         "7-zip",
         "ShareX",
         "Notepad++",
@@ -80,41 +81,41 @@ int main() {
         "FireFox"
     };
 
-    std::string downloadFolder;
+    string downloadFolder;
     char* buffer = nullptr;
     size_t size;
 
     if (_dupenv_s(&buffer, &size, "USERPROFILE") == 0) {
-        downloadFolder = std::string(buffer) + "\\Documents\\DownloadedFiles";
+        downloadFolder = string(buffer) + "\\Documents\\DownloadedFiles";
         free(buffer);
     }
     else {
-        std::cerr << "Не удалось получить путь к папке пользователя." << std::endl;
+        cerr << "Не удалось получить путь к папке пользователя." << endl;
         return 1;
     }
 
     CreateDirectoryA(downloadFolder.c_str(), NULL);
 
-    std::cout << "Выберите программы для загрузки (введите номера через пробел):" << std::endl;
+    cout << "Выберите программы для загрузки (введите номера через пробел):" << endl;
     for (size_t i = 0; i < fileNames.size(); ++i) {
-        std::cout << i + 1 << ". " << fileNames[i] << std::endl;
+        cout << i + 1 << ". " << fileNames[i] << endl;
     }
 
-    std::string input;
-    std::getline(std::cin, input);
+    string input;
+    getline(cin, input);
 
-    std::vector<int> selectedFiles;
+    vector<int> selectedFiles;
     size_t pos = 0;
-    while ((pos = input.find(' ')) != std::string::npos) {
-        selectedFiles.push_back(std::stoi(input.substr(0, pos)) - 1);
+    while ((pos = input.find(' ')) != string::npos) {
+        selectedFiles.push_back(stoi(input.substr(0, pos)) - 1);
         input.erase(0, pos + 1);
     }
-    selectedFiles.push_back(std::stoi(input) - 1);
+    selectedFiles.push_back(stoi(input) - 1);
 
     for (int index : selectedFiles) {
         if (index >= 0 && index < fileUrls.size()) {
-            std::string fileName = fileUrls[index].substr(fileUrls[index].find_last_of('/') + 1);
-            std::string filePath = downloadFolder + "\\" + fileName;
+            string fileName = fileUrls[index].substr(fileUrls[index].find_last_of('/') + 1);
+            string filePath = downloadFolder + "\\" + fileName;
 
 
             if (fileUrls[index].substr(fileUrls[index].find_last_of('.') + 1) == "exe" ||
@@ -127,10 +128,10 @@ int main() {
             }
         }
         else {
-            std::cerr << "Некорректный номер: " << index + 1 << std::endl;
+            cerr << "Некорректный номер: " << index + 1 << endl;
         }
     }
-    std::cout << "Нажмите Enter для выхода..." << std::endl;
-    std::cin.get();
+    cout << "Нажмите Enter для выхода..." << endl;
+    cin.get();
     return 0;
 }
